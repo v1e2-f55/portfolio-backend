@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
+const authMiddleware = require("../middleware/authMiddleware");
+
 const router = express.Router();
 
 /* REGISTER */
@@ -62,5 +64,11 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
+/* DASHBOARD (Protected Route) */
+router.get("/dashboard", authMiddleware, (req, res) => {
+  res.json({
+    message: "Welcome to dashboard",
+    user: req.user
+  });
+});
 module.exports = router;
